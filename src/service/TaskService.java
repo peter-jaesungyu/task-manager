@@ -1,5 +1,6 @@
 package service;
 
+import entity.Status;
 import repository.TaskRepository;
 
 public class TaskService {
@@ -26,9 +27,10 @@ public class TaskService {
         taskRepository.delete(id);
     }
 
-    // mark-in-progress
-
-    // mark-done
+    // mark-in-progress, mark-done
+    public void changeStatus(int id, Status status) {
+        taskRepository.updateStatus(id, status);
+    }
 
     // list
 

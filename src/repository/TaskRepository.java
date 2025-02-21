@@ -1,5 +1,6 @@
 package repository;
 
+import entity.Status;
 import entity.Task;
 import fileIO.JsonManager;
 
@@ -67,9 +68,19 @@ public class TaskRepository {
         }
     }
 
-    // mark-in-progress
+    // mark-in-progress, mark-done
+    public void updateStatus(int id, Status status) {
+        Optional<Task> byId = findById(id);
 
-    // mark-done
+        if (byId.isEmpty()) {
+            throw new IllegalStateException("Not found id number " + id);
+        } else {
+            Task task = byId.get();
+            task.setStatus(status);
+            tasks.replace(id, task);
+            jsonManager.writeJson(tasks.values().stream().toList());
+        }
+    }
 
     // list
 

@@ -1,6 +1,7 @@
 package controller;
 
 import entity.Flag;
+import entity.Status;
 import service.TaskService;
 
 public class TaskController {
@@ -33,6 +34,18 @@ public class TaskController {
                 }
                 deleteTask();
                 break;
+            case MARK_DONE :
+                if (args.length != 2) {
+                    throw new IllegalArgumentException("Invalid command line error! Expected 2 argument but the actual number of arguments is " + args.length);
+                }
+                changeStatus(Status.DONE);
+                break;
+            case MARK_IN_PROGRESS :
+                if (args.length != 2) {
+                    throw new IllegalArgumentException("Invalid command line error! Expected 2 argument but the actual number of arguments is " + args.length);
+                }
+                changeStatus(Status.IN_PROGRESS);
+                break;
             default :
                 System.out.println("Invalid command error! Unable to process your command");
                 break;
@@ -55,9 +68,10 @@ public class TaskController {
         taskService.delete(Integer.parseInt(args[1]));
     }
 
-    // mark-in-progress
-
-    // mark-done
+    // mark-in-progress, mark-done
+    public void changeStatus(Status status) {
+        taskService.changeStatus(Integer.parseInt(args[1]), status);
+    }
 
     // list
 
