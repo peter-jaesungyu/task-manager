@@ -56,6 +56,16 @@ public class TaskRepository {
     }
 
     // delete
+    public void delete(int id) {
+        Optional<Task> byId = findById(id);
+
+        if (byId.isEmpty()) {
+            throw new IllegalStateException("Not found id number " + id);
+        } else {
+            tasks.remove(id);
+            jsonManager.writeJson(tasks.values().stream().toList());
+        }
+    }
 
     // mark-in-progress
 

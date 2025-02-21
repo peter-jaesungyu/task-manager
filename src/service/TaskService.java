@@ -22,6 +22,9 @@ public class TaskService {
     }
 
     // delete
+    public void delete(int id) {
+        taskRepository.delete(id);
+    }
 
     // mark-in-progress
 

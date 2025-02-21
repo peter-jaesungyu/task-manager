@@ -27,6 +27,12 @@ public class TaskController {
                 }
                 updateTask();
                 break;
+            case DELETE :
+                if (args.length != 2) {
+                    throw new IllegalArgumentException("Invalid command line error! Expected 2 argument but the actual number of arguments is " + args.length);
+                }
+                deleteTask();
+                break;
             default :
                 System.out.println("Invalid command error! Unable to process your command");
                 break;
@@ -45,6 +51,9 @@ public class TaskController {
     }
 
     // delete
+    public void deleteTask() {
+        taskService.delete(Integer.parseInt(args[1]));
+    }
 
     // mark-in-progress
 
