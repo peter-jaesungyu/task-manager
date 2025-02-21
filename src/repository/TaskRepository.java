@@ -3,6 +3,8 @@ package repository;
 import entity.Task;
 import fileIO.JsonManager;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -39,6 +41,19 @@ public class TaskRepository {
     }
 
     // update
+    public void update(int id, String description) {
+        Optional<Task> byId = findById(id);
+
+        if (byId.isEmpty()) {
+            throw new IllegalStateException("Not found id number " + id);
+        } else {
+            Task task = byId.get();
+            task.setDescription(description);
+            task.setUpdatedAt(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
+            tasks.replace(id, task);
+            jsonManager.writeJson(tasks.values().stream().toList());
+        }
+    }
 
     // delete
 

@@ -17,6 +17,9 @@ public class TaskService {
     }
 
     // update
+    public void update(int id, String description) {
+        taskRepository.update(id, description);
+    }
 
     // delete
 

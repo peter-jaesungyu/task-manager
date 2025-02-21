@@ -21,6 +21,12 @@ public class TaskController {
                 }
                 addTask();
                 break;
+            case UPDATE :
+                if (args.length != 3) {
+                    throw new IllegalArgumentException("Invalid command line error! Expected 3 argument but the actual number of arguments is " + args.length);
+                }
+                updateTask();
+                break;
             default :
                 System.out.println("Invalid command error! Unable to process your command");
                 break;
@@ -34,6 +40,9 @@ public class TaskController {
     }
 
     // update
+    public void updateTask() {
+        taskService.update(Integer.parseInt(args[1]), args[2]);
+    }
 
     // delete
 
