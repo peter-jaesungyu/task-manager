@@ -2,7 +2,10 @@ package controller;
 
 import entity.Flag;
 import entity.Status;
+import entity.TaskResponseDto;
 import service.TaskService;
+
+import java.util.List;
 
 public class TaskController {
     private final String[] args;
@@ -46,6 +49,15 @@ public class TaskController {
                 }
                 changeStatus(Status.IN_PROGRESS);
                 break;
+            case LIST :
+                if (args.length == 1) {
+                    listTasks();
+                } else if (Status.fromString(args[1]) != null && args.length == 2) {
+                    listTasksByStatus(Status.fromString(args[1]));
+                } else {
+                    throw new IllegalArgumentException("Invalid command line error! Expected at least 1 argument but the actual number of arguments is " + args.length);
+                }
+                break;
             default :
                 System.out.println("Invalid command error! Unable to process your command");
                 break;
@@ -74,11 +86,18 @@ public class TaskController {
     }
 
     // list
+    public void listTasks() {
+        List<TaskResponseDto> taskResponseDtos = taskService.listAll();
+        for (TaskResponseDto dto : taskResponseDtos) {
+            System.out.println(dto);
+        }
+    }
 
-    // list done
-
-    // list todo
-
-    // list in-progress
-
+    // list done, todo, list in-progress
+    public void listTasksByStatus(Status status) {
+        List<TaskResponseDto> taskResponseDtos = taskService.listByStatus(status);
+        for (TaskResponseDto dto : taskResponseDtos) {
+            System.out.println(dto);
+        }
+    }
 }

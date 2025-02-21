@@ -83,10 +83,12 @@ public class TaskRepository {
     }
 
     // list
+    public List<Task> findAll() {
+        return tasks.values().stream().toList();
+    }
 
-    // list done
-
-    // list todo
-
-    // list in-progress
+    // list done, todo, list in-progress
+    public List<Task> findByStatus(Status status) {
+        return tasks.values().stream().filter(o -> o.getStatus() == status).collect(Collectors.toList());
+    }
 }
