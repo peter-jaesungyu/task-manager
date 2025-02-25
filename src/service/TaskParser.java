@@ -7,8 +7,8 @@ import java.time.LocalDateTime;
 
 public class TaskParser {
     public static Task fromString(String json) {
-        json = json.replaceAll("[{}\\[\\]\"\n]", ""); // Remove brackets and quotes
-        String[] keyValues = json.split(",");
+        json = json.replaceAll("[{}\\[\\]\n]", ""); // Remove brackets and quotes
+        String[] keyValues = json.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1); // Split by "," only if it's outside of quotes
 
         int id = 0;
         String description = null;
@@ -19,8 +19,8 @@ public class TaskParser {
 
         for (String keyValue : keyValues) {
             String[] pair = keyValue.split(":");
-            String key = pair[0].trim();
-            String value = pair[1].trim();
+            String key = pair[0].replaceAll("[\"]", "").trim();
+            String value = pair[1].replaceAll("[\"]", "").trim();
 
             switch (key) {
                 case "id":
@@ -33,10 +33,10 @@ public class TaskParser {
                     status = Status.fromString(value);
                     break;
                 case "createdAt":
-                    createdAt = LocalDateTime.parse(keyValue.replaceAll("createdAt : ", ""));
+                    createdAt = LocalDateTime.parse(keyValue.replace("\"", "").replace("createdAt : ", ""));
                     break;
                 case "updatedAt":
-                    updatedAt = LocalDateTime.parse(keyValue.replaceAll("updatedAt : ", ""));
+                    updatedAt = LocalDateTime.parse(keyValue.replace("\"", "").replace("updatedAt : ", ""));
                     break;
                 case "isDeleted":
                     isDeleted = Boolean.parseBoolean(value);
