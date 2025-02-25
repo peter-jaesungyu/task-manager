@@ -1,6 +1,7 @@
 # Task CLI Application
 
-This is a simple task management application. This program runs on command line interface (CLI)
+This is a simple task management application. This program runs on command line interface (CLI).  
+This project is based on the following project guide : https://roadmap.sh/projects/task-tracker 
 
 ## Features
 
