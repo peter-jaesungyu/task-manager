@@ -43,29 +43,32 @@ public class TaskRepository {
     }
 
     // update
-    public void update(int id, String description) {
+    public int update(int id, String description) {
         Task task = findById(id).orElseThrow(() -> new IllegalStateException("Not found id number " + id));
         task.setDescription(description);
         task.setUpdatedAt(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
         tasks.replace(id, task);
         jsonManager.writeJson(tasks.values().stream().toList());
+        return id;
     }
 
     // delete
-    public void delete(int id) {
+    public int delete(int id) {
         Task task = findById(id).orElseThrow(() -> new IllegalStateException("Not found id number " + id));
         task.setDeleted(true);
         task.setUpdatedAt(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
         tasks.replace(id, task);
         jsonManager.writeJson(tasks.values().stream().toList());
+        return id;
     }
 
     // mark-in-progress, mark-done
-    public void updateStatus(int id, Status status) {
+    public int updateStatus(int id, Status status) {
         Task task = findById(id).orElseThrow(() -> new IllegalStateException("Not found id number " + id));
         task.setStatus(status);
         tasks.replace(id, task);
         jsonManager.writeJson(tasks.values().stream().toList());
+        return id;
     }
 
     // list

@@ -72,17 +72,20 @@ public class TaskController {
 
     // update
     public void updateTask() {
-        taskService.update(Integer.parseInt(args[1]), args[2]);
+        int taskId = taskService.update(Integer.parseInt(args[1]), args[2]);
+        System.out.printf("Task updated successfully (ID: %d)", taskId);
     }
 
     // delete
     public void deleteTask() {
-        taskService.delete(Integer.parseInt(args[1]));
+        int taskId = taskService.delete(Integer.parseInt(args[1]));
+        System.out.printf("Task deleted successfully (ID: %d)", taskId);
     }
 
     // mark-in-progress, mark-done
     public void changeStatus(Status status) {
-        taskService.changeStatus(Integer.parseInt(args[1]), status);
+        int taskId = taskService.changeStatus(Integer.parseInt(args[1]), status);
+        System.out.printf("Task's status changed successfully (ID: %d)", taskId);
     }
 
     // list

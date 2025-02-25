@@ -24,18 +24,18 @@ public class TaskService {
     }
 
     // update
-    public void update(int id, String description) {
-        taskRepository.update(id, description);
+    public int update(int id, String description) {
+        return taskRepository.update(id, description);
     }
 
     // delete
-    public void delete(int id) {
-        taskRepository.delete(id);
+    public int delete(int id) {
+        return taskRepository.delete(id);
     }
 
     // mark-in-progress, mark-done
-    public void changeStatus(int id, Status status) {
-        taskRepository.updateStatus(id, status);
+    public int changeStatus(int id, Status status) {
+        return taskRepository.updateStatus(id, status);
     }
 
     // list
