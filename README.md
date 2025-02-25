@@ -50,11 +50,11 @@ task-cli delete 1
 
 # Marking a task as in progress
 task-cli mark-in-progress 1
-# Output: Task marked as in progress (ID: 1)
+# Output: Task's status changed successfully (ID: 1)
 
 # Marking a task as done
 task-cli mark-done 1
-# Output: Task marked as done (ID: 1)
+# Output: Task's status changed successfully (ID: 1)
 
 # Listing all tasks
 task-cli list
