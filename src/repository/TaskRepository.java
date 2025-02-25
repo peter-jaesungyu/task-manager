@@ -28,7 +28,8 @@ public class TaskRepository {
 
     // findById
     public Optional<Task> findById(int id) {
-        return Optional.ofNullable(tasks.get(id));
+        return Optional.ofNullable(tasks.get(id))
+                .filter(task -> !task.isDeleted());
     }
 
     // add
@@ -43,52 +44,37 @@ public class TaskRepository {
 
     // update
     public void update(int id, String description) {
-        Optional<Task> byId = findById(id);
-
-        if (byId.isEmpty()) {
-            throw new IllegalStateException("Not found id number " + id);
-        } else {
-            Task task = byId.get();
-            task.setDescription(description);
-            task.setUpdatedAt(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
-            tasks.replace(id, task);
-            jsonManager.writeJson(tasks.values().stream().toList());
-        }
+        Task task = findById(id).orElseThrow(() -> new IllegalStateException("Not found id number " + id));
+        task.setDescription(description);
+        task.setUpdatedAt(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
+        tasks.replace(id, task);
+        jsonManager.writeJson(tasks.values().stream().toList());
     }
 
     // delete
     public void delete(int id) {
-        Optional<Task> byId = findById(id);
-
-        if (byId.isEmpty()) {
-            throw new IllegalStateException("Not found id number " + id);
-        } else {
-            tasks.remove(id);
-            jsonManager.writeJson(tasks.values().stream().toList());
-        }
+        Task task = findById(id).orElseThrow(() -> new IllegalStateException("Not found id number " + id));
+        task.setDeleted(true);
+        task.setUpdatedAt(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
+        tasks.replace(id, task);
+        jsonManager.writeJson(tasks.values().stream().toList());
     }
 
     // mark-in-progress, mark-done
     public void updateStatus(int id, Status status) {
-        Optional<Task> byId = findById(id);
-
-        if (byId.isEmpty()) {
-            throw new IllegalStateException("Not found id number " + id);
-        } else {
-            Task task = byId.get();
-            task.setStatus(status);
-            tasks.replace(id, task);
-            jsonManager.writeJson(tasks.values().stream().toList());
-        }
+        Task task = findById(id).orElseThrow(() -> new IllegalStateException("Not found id number " + id));
+        task.setStatus(status);
+        tasks.replace(id, task);
+        jsonManager.writeJson(tasks.values().stream().toList());
     }
 
     // list
     public List<Task> findAll() {
-        return tasks.values().stream().toList();
+        return tasks.values().stream().filter(o -> !o.isDeleted()).toList();
     }
 
     // list done, todo, list in-progress
     public List<Task> findByStatus(Status status) {
-        return tasks.values().stream().filter(o -> o.getStatus() == status).collect(Collectors.toList());
+        return tasks.values().stream().filter(o -> !o.isDeleted() && o.getStatus() == status).collect(Collectors.toList());
     }
 }
