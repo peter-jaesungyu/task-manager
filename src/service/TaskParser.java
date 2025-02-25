@@ -18,29 +18,31 @@ public class TaskParser {
         boolean isDeleted = false;
 
         for (String keyValue : keyValues) {
-            String[] pair = keyValue.split(":");
-            String key = pair[0].replaceAll("[\"]", "").trim();
-            String value = pair[1].replaceAll("[\"]", "").trim();
+            if (!keyValue.isEmpty()) {
+                String[] pair = keyValue.split(":");
+                String key = pair[0].replaceAll("[\"]", "").trim();
+                String value = pair[1].replaceAll("[\"]", "").trim();
 
-            switch (key) {
-                case "id":
-                    id = Integer.parseInt(value);
-                    break;
-                case "description":
-                    description = value;
-                    break;
-                case "status":
-                    status = Status.fromString(value);
-                    break;
-                case "createdAt":
-                    createdAt = LocalDateTime.parse(keyValue.replace("\"", "").replace("createdAt : ", ""));
-                    break;
-                case "updatedAt":
-                    updatedAt = LocalDateTime.parse(keyValue.replace("\"", "").replace("updatedAt : ", ""));
-                    break;
-                case "isDeleted":
-                    isDeleted = Boolean.parseBoolean(value);
-                    break;
+                switch (key) {
+                    case "id":
+                        id = Integer.parseInt(value);
+                        break;
+                    case "description":
+                        description = value;
+                        break;
+                    case "status":
+                        status = Status.fromString(value);
+                        break;
+                    case "createdAt":
+                        createdAt = LocalDateTime.parse(keyValue.replace("\"createdAt\" : ", "").replaceAll("[\"]", ""));
+                        break;
+                    case "updatedAt":
+                        updatedAt = LocalDateTime.parse(keyValue.replace("\"updatedAt\" : ", "").replaceAll("[\"]", ""));
+                        break;
+                    case "isDeleted":
+                        isDeleted = Boolean.parseBoolean(value);
+                        break;
+                }
             }
         }
 
