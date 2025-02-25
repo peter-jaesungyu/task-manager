@@ -1,3 +1,12 @@
 @echo off
-title This is task-cli application
-java -classpath C:\dev\toy_projects\task-cli\out\production\task-cli TaskCliApplication %1 %2 %3
+title Task CLI Application
+setlocal
+
+:: Set PATH based on the location of this script file
+set SCRIPT_DIR=%~dp0
+set JAVA_CLASSPATH=%SCRIPT_DIR%out\production\task-cli
+
+:: Run Java
+java -classpath "%JAVA_CLASSPATH%" TaskCliApplication %*
+
+endlocal
